@@ -4,12 +4,6 @@ module.exports = {
             nodeIntegration: true,
             externals: ['vue-json-viewer',"vue"],
             builderOptions:{
-                "directories": {
-                    "output": "build"
-                },
-                "files": [
-                    "dist/electron/**/*"
-                ],
                 "dmg": {
                     "contents": [
                         {
