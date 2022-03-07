@@ -1,0 +1,48 @@
+version: 0.1.{build}
+
+branches:
+  only:
+    - master
+
+image: Visual Studio 2017
+platform:
+  - x64
+
+cache:
+  - node_modules
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+  - '%USERPROFILE%\AppData\Local\Yarn\cache'
+
+init:
+  - git config --global core.autocrlf input
+
+install:
+  - ps: Install-Product node 14 x64
+  - git reset --hard HEAD
+  - yarn config set ignore-engines true
+  - yarn install
+  - node --version
+
+build_script:
+  - yarn electron:build
+
+test: off
+
+artifacts: # push all files in directory
+  - path: build\*.exe
+    name: installer
+  - path: build\*.yml
+    name: yml
+
+#deploy:
+#  release: gowe-win64-v$(APPVEYOR_BUILD_VERSION)
+#  description: 'Release description'
+#  provider: GitHub
+#  auth_token:
+#    secure: VUC5+lOxtcHZsYiE0epkub4xzMH8q+yHqnIL9ClVz57x0tJyETRy1ROqUEpvxZwh
+#  artifact: installer, portable
+#  draft: false
+#  prerelease: false
+#  on:
+#    branch: master
