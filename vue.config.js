@@ -21,10 +21,13 @@ module.exports = {
                 },
                 "mac": {
                     "icon": "build/icons/icon.png",
-                    "target": [
-                        "dmg",
-                        "zip"
-                    ]
+                    "target": {
+                        target: 'default',
+                        arch: [
+                            'x64',
+                            'arm64'
+                        ]
+                    }
                 },
                 "win": {
                     "icon": "build/icons/icon.png"

@@ -5,7 +5,7 @@ import store from './store'
 import { ipcRenderer } from 'electron'
 window.ipcRenderer = ipcRenderer
 Vue.config.productionTip = false
-import { Button, Input,TabPane,Tabs,Table,TableColumn,Dialog,Form,FormItem,Radio,RadioGroup,Select,Option } from 'element-ui';
+import { Button, Input,TabPane,Tabs,Table,TableColumn,Dialog,Form,FormItem,Radio,RadioGroup,Select,Option,Container,Header,Main,Aside } from 'element-ui';
 import JsonViewer from 'vue-json-viewer'
 
 Vue.use(Button)
@@ -22,6 +22,10 @@ Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Container)
+Vue.use(Header)
+Vue.use(Main)
+Vue.use(Aside)
 
 new Vue({
   router,

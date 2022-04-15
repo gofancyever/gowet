@@ -1,35 +1,72 @@
 <template>
-<div style="height: 100%;display: flex;flex-direction: column;">
-    <div class="url-panel">
-        <i class="el-icon-arrow-left back-button" @click="backClick"></i>
-        <el-input @change="changeUrl" v-model="url" placeholder="请输入内容"></el-input>
-        <el-select v-model="env" placeholder="请选择" @change="envChange">
-            <el-option
-                v-for="item in envOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-            </el-option>
-        </el-select>
-    </div>
-
-    <div class="panel">
-        <div class="panel-url-content">
-            <div class="panel-url-btns">
-                <el-button size="mini" @click="clearUrl" icon="el-icon-delete-solid"></el-button>
-                <el-button size="mini" @click="decodeStr" icon="el-icon-unlock"></el-button>
+    <el-container style="height: 640px">
+        <el-header>
+            <div class="url-panel">
+                <i class="el-icon-arrow-left back-button" @click="backClick"></i>
+                <el-input @change="changeUrl" v-model="url" placeholder="请输入内容"></el-input>
+                <el-select v-model="env" placeholder="请选择" @change="envChange">
+                    <el-option
+                        v-for="item in envOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
             </div>
-            <div @click="urlClick(index)" :class="currentIdx == index ? 'panel-url-selected' : 'panel-url' " v-for="(item,index) in requestDatas" :key="index">
-                {{ getLastPath(item.response.url) }}
-            </div>
-        </div>
-        <div class="request-panel-content">
-            <DecodePanel v-if="showDecodePanel" />
-            <RequestPanel v-if="currentItem && showDecodePanel == false" :requestItem="currentItem" />
-        </div>
+        </el-header>
+        <el-container style="height: 580px">
+            <el-aside width="200px">
+                <div class="panel-url-content">
+                    <div class="panel-url-btns">
+                        <el-button size="mini" @click="clearUrl" icon="el-icon-delete-solid"></el-button>
+                        <el-button size="mini" @click="decodeStr" icon="el-icon-unlock"></el-button>
+                    </div>
+                    <div @click="urlClick(index)" :class="currentIdx == index ? 'panel-url-selected' : 'panel-url' " v-for="(item,index) in requestDatas" :key="index">
+                        {{ getLastPath(item.response.url) }}
+                    </div>
+                </div>
+            </el-aside>
+            <el-main>
+                <div class="request-panel-content">
+                    <DecodePanel v-if="showDecodePanel" />
+                    <RequestPanel v-if="currentItem && showDecodePanel == false" :requestItem="currentItem" />
+                </div>
+            </el-main>
+        </el-container>
+    </el-container>
+<!--<div style="height: 100%;display: flex;flex-direction: column;">-->
+<!--    <div class="url-panel">-->
+<!--        <i class="el-icon-arrow-left back-button" @click="backClick"></i>-->
+<!--        <el-input @change="changeUrl" v-model="url" placeholder="请输入内容"></el-input>-->
+<!--        <el-select v-model="env" placeholder="请选择" @change="envChange">-->
+<!--            <el-option-->
+<!--                v-for="item in envOptions"-->
+<!--                :key="item.value"-->
+<!--                :label="item.label"-->
+<!--                :value="item.value">-->
+<!--            </el-option>-->
+<!--        </el-select>-->
+<!--    </div>-->
 
-    </div>
-</div>
+<!--    <div class="panel">-->
+<!--        <div class="panel-url-content">-->
+<!--            <div class="panel-url-btns">-->
+<!--                <el-button size="mini" @click="clearUrl" icon="el-icon-delete-solid"></el-button>-->
+<!--                <el-button size="mini" @click="decodeStr" icon="el-icon-unlock"></el-button>-->
+<!--            </div>-->
+<!--            <div class="url-list">-->
+<!--                <div @click="urlClick(index)" :class="currentIdx == index ? 'panel-url-selected' : 'panel-url' " v-for="(item,index) in requestDatas" :key="index">-->
+<!--                    {{ getLastPath(item.response.url) }}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="request-panel-content">-->
+<!--            <DecodePanel v-if="showDecodePanel" />-->
+<!--            <RequestPanel v-if="currentItem && showDecodePanel == false" :requestItem="currentItem" />-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
 </template>
 
 <script>
@@ -175,8 +212,6 @@ name: "tool",
     flex:1;
 }
 .panel-url-content {
-    width: 200px;
-    overflow: scroll;
     flex-shrink:0;
     text-align: left;
 }
@@ -210,6 +245,13 @@ name: "tool",
     text-align: center;
     width: 50px;
     cursor:pointer;
+}
+.panel-url-btns {
+    position: sticky;
+    top:0px;
+}
+.url-list {
+    overflow: scroll;
 }
 
 </style>

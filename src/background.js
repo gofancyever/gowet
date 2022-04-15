@@ -275,7 +275,6 @@ async function chromeDebug(){
   try {
     await webView.webContents.debugger.attach('1.1');
     await webView.webContents.debugger.sendCommand('Network.enable');
-    await webView.webContents.debugger.sendCommand('Network.enable');
     await webView.webContents.debugger.sendCommand("Emulation.setEmitTouchEventsForMouse", {         enabled: true,configuration:"mobile"     });
     await webView.webContents.debugger.sendCommand("Emulation.setTouchEmulationEnabled", {         enabled: true     });
     await webView.webContents.debugger.sendCommand("Emulation.setFocusEmulationEnabled", {         enabled: true     });
@@ -290,10 +289,10 @@ async function chromeDebug(){
       scale:1,
     }
     await webView.webContents.debugger.sendCommand("Emulation.setDeviceMetricsOverride", mobile_emulation);
-    const mobile_useragent = {
-      userAgent:"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1",
-      acceptLanguage:"zh-CN,zh;q=0.9",
-    }
+    // const mobile_useragent = {
+    //   userAgent:"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1",
+    //   acceptLanguage:"zh-CN,zh;q=0.9",
+    // }
     // await webView.webContents.debugger.sendCommand("Emulation.setUserAgentOverride", mobile_useragent);
     await webView.webContents.debugger.sendCommand("Security.setIgnoreCertificateErrors", {         ignore: true     });
     await webView.webContents.debugger.sendCommand("Security.disable",);
@@ -310,7 +309,10 @@ async function chromeDebug(){
     if (method === 'Network.responseReceived') {
       if (params.type == "XHR") {
         console.log("params.requestId",params.requestId)
-        requestDatas[params.requestId] = params
+        console.log("params.requestId",JSON.stringify(params))
+        if (params.response.url.indexOf("ronghub.com") == -1) {
+          requestDatas[params.requestId] = params
+        }
       }
     }
     if (method == 'Network.loadingFinished') {
@@ -369,10 +371,15 @@ async function createWindow() {
     resizable:false
   })
   mainWindow = win
-  webView = new BrowserView()
+  webView = new BrowserView({webPreferences:{
+      webSecurity:false,
+      allowRunningInsecureContent:true,
+      v8CacheOptions:"none"
+    }})
   win.addBrowserView(webView)
   webView.setBounds({ x: 0, y: 0, width: 375, height: 667 })
   await webView.webContents.loadURL("http://weixin.sxyygh.com")
+  webView.webContents.enableDeviceEmulation({screenPosition:"mobile"})
   toolView = new BrowserView({
     webPreferences: {
 

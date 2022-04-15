@@ -29,13 +29,5 @@
   color: #42b983;
 }
 /* CSS */
-html,body {
-    height: 100%;
-}
-#app {
-    height: 100%;
-}
-#app > div {
-    height: 100%;
-}
+
 </style>
