@@ -2,6 +2,7 @@
     <el-container style="height: 640px">
         <el-header>
             <div class="url-panel">
+                <i class="el-icon-refresh back-button" @click="refreshClick"></i>
                 <i class="el-icon-arrow-left back-button" @click="backClick"></i>
                 <el-input @change="changeUrl" v-model="url" placeholder="请输入内容"></el-input>
                 <el-select v-model="env" placeholder="请选择" @change="envChange">
@@ -15,7 +16,7 @@
             </div>
         </el-header>
         <el-container style="height: 580px">
-            <el-aside width="200px">
+            <el-aside width="200px" class="aside">
                 <div class="panel-url-content">
                     <div class="panel-url-btns">
                         <el-button size="mini" @click="clearUrl" icon="el-icon-delete-solid"></el-button>
@@ -124,7 +125,7 @@ name: "tool",
             this.url = decodeURIComponent(url + queryStr)
         })
         ipcRenderer.on("REQUEST",(event,arg)=>{
-            console.log("data:",arg)
+            // console.log("data:",arg)
             this.requestDatas.push(arg)
         })
         ipcRenderer.on("PROXYISENABLE",(event,arg)=>{
@@ -173,6 +174,9 @@ name: "tool",
         })
     },
     methods: {
+        refreshClick(){
+            ipcRenderer.send("REFRESH")
+        },
         backClick() {
             ipcRenderer.send("GOBACK")
         },
@@ -253,5 +257,7 @@ name: "tool",
 .url-list {
     overflow: scroll;
 }
-
+.aside {
+    box-shadow: 2px 2px 2px #cccccc;
+}
 </style>

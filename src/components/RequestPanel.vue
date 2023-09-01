@@ -6,7 +6,8 @@
                 <div class="item-value" style="text-align: left;">{{ requestItem.response.url }}</div>
 
                 <div class="item-title">Request Payload Decode</div>
-                <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.postData" :value="JSON.parse(decryptUrlParams(requestItem.postData))"></json-viewer>
+                <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.postData && JSON.parse(requestItem.postData).token === 'v110'" :value="JSON.parse(decryptUrlParams(requestItem.postData))"></json-viewer>
+                <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.postData && JSON.parse(requestItem.postData).token === 'v120'" :value="JSON.parse(decryptSm4UrlParams(requestItem.postData))"></json-viewer>
 
                 <div class="item-title">Request Payload Origin</div>
                 <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.postData" :value="JSON.parse(requestItem.postData)"></json-viewer>
@@ -15,8 +16,8 @@
             <el-tab-pane label="Response" name="response">
                 <div class="pane-container">
                     <div class="item-title">Response Decode</div>
-                    <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.response.body.body" :value="JSON.parse(decryptResponseData(requestItem.response.body.body))"></json-viewer>
-
+                    <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.response.body.body && JSON.parse(requestItem.postData).token === 'v110'" :value="JSON.parse(decryptResponseData(requestItem.response.body.body))"></json-viewer>
+                    <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.response.body.body && JSON.parse(requestItem.postData).token === 'v120'" :value="JSON.parse(decryptSm4ResponseData(requestItem.response.body.body))"></json-viewer>
                     <div class="item-title">Response Origin</div>
                     <json-viewer style="text-align: left;" :copyable="true" v-if="requestItem.response.body.body" :value="JSON.parse(requestItem.response.body.body)"></json-viewer>
                 </div>
@@ -154,6 +155,24 @@ name: "RequestPanel",
             }
             this.dialogFormVisible = false
         },
+        decryptSm4ResponseData(ret){
+            console.log(ret)
+            var json = ret
+            if (typeof ret == "string") {
+                try {
+                    json = JSON.parse(ret)
+                }catch (e) {
+                    return ret
+                }
+
+            }
+            if (json && json.result && json.code == 1) {
+                let encryptStr = encryptModule.sm4Decrypt(json.result,"X2E10EJTMCTV58VJI76LN050CEBEW5N5")
+                return encryptStr
+            }else {
+                return ret
+            }
+        },
         decryptResponseData(ret){
             console.log(ret)
             var json = ret
@@ -180,6 +199,21 @@ name: "RequestPanel",
         localStorageChange(row) {
             console.log(row)
             ipcRenderer.send("SETLOCALSTORAGE",row)
+        },
+        decryptSm4UrlParams(data) {
+            if (!data) {
+                return ""
+            }
+            var params = data
+            if (typeof data == "string") {
+                params = JSON.parse(data)
+            }
+            console.log(params)
+            if (params.endec == 'on') {
+                return encryptModule.sm4Decrypt(params.params,"X2E10EJTMCTV58VJI76LN050CEBEW5N5")
+            }else {
+                return data
+            }
         },
         decryptUrlParams(data) {
             if (!data) {

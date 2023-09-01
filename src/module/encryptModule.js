@@ -1,5 +1,5 @@
 const crypto = require('crypto-js');
-
+const sm4 = require("sm-crypto").sm4;
 const encryptModule = {
     key: 'sxlkkjoefncxmggg',
     iv: '0682036802830600',
@@ -22,6 +22,12 @@ const encryptModule = {
         var encrypted = crypto.AES.encrypt(srcs, akey, {
             iv: crypto.enc.Utf8.parse(encryptModule.iv), mode: crypto.mode.CBC, padding: crypto.pad.Pkcs7});
         return encrypted.toString()
+    },
+    sm4Encrypt(data, sm4Key) {
+        return sm4.encrypt(data, sm4Key)
+    },
+    sm4Decrypt(data, sm4Key) {
+        return sm4.decrypt(data, sm4Key)
     },
     objToBase64(obj) {
         return encodeURIComponent(Buffer.from(JSON.stringify(obj)).toString('base64'));

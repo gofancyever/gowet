@@ -18,6 +18,7 @@
     "crypto-js": "^4.1.1",
     "electron-store": "^8.0.1",
     "element-ui": "^2.15.6",
+    "sm-crypto": "^0.3.12",
     "vue": "^2.6.11",
     "vue-json-viewer": "^2.2.21",
     "vue-router": "^3.2.0",

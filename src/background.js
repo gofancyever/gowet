@@ -73,7 +73,7 @@ function onIpc(){
   // 切换用户
   ipcMain.on("SWITCHUSER",(event,arg)=>{
     console.log("SWITCHUSER")
-    util.StorageUtil.setUserInfoToLocalStroage(mainWindow,arg)
+    util.StorageUtil.setUserInfoToLocalStroage(webView,arg)
     webView.webContents.reload()
 
   })
@@ -82,13 +82,22 @@ function onIpc(){
   ipcMain.on("CHANGEENV",(event,arg)=>{
     console.log("CHANGEENV")
     console.log(arg)
-    if (arg != "production") {
-      requestEnv = `requestEnv/${arg}`
-      const mobile_useragent = `Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 ${requestEnv}`
-      webView.webContents.setUserAgent(mobile_useragent)
-
+    var url = webView.webContents.getURL()
+    var prefixUrl = url.split('#')[0]
+    console.log(url)
+    switch (arg) {
+      case 'production':
+        url = url.replace(prefixUrl,'https://weixin.sxyygh.com/')
+        break;
+      case 'preview':
+        url = url.replace(prefixUrl,'https://weixin.sxyygh.com/preview/')
+            break;
+      case 'development':
+        url = url.replace(prefixUrl,'https://weixin.sxyygh.com/beta/')
+        break;
     }
-    webView.webContents.reload()
+    webView.webContents.loadURL(url)
+    toolView.webContents.send("CURRENTURL",url)
   })
   // 网页返回
   ipcMain.on("GOBACK",(event,arg) =>{
@@ -100,7 +109,7 @@ function onIpc(){
   })
   ipcMain.on("REFRESH",()=>{
     console.log("REFRESH")
-    webView.webContents.send("TEST")
+    webView.webContents.reload()
   })
 }
 function openInstallCertWindow() {
