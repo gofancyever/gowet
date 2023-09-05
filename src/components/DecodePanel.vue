@@ -25,7 +25,7 @@ name: "DecodePanel",
     methods: {
         changeText(value){
             try {
-                let encryptStr = encryptModule.j_img666555_d_m(value)
+                let encryptStr = encryptModule.sm4Decrypt(value)
                 this.result = JSON.parse(encryptStr)
             }catch (e) {
                 console.log(e)

@@ -24,10 +24,10 @@ const encryptModule = {
         return encrypted.toString()
     },
     sm4Encrypt(data, sm4Key) {
-        return sm4.encrypt(data, sm4Key)
+        return sm4.encrypt(data, sm4Key = "X2E10EJTMCTV58VJI76LN050CEBEW5N5")
     },
     sm4Decrypt(data, sm4Key) {
-        return sm4.decrypt(data, sm4Key)
+        return sm4.decrypt(data, sm4Key = "X2E10EJTMCTV58VJI76LN050CEBEW5N5")
     },
     objToBase64(obj) {
         return encodeURIComponent(Buffer.from(JSON.stringify(obj)).toString('base64'));
