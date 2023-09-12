@@ -79,6 +79,10 @@ import { MessageBox } from 'element-ui';
 import DecodePanel from "../components/DecodePanel";
 const envConfig = [
     {
+        value: 'release',
+        label: '线上'
+    },
+    {
         value: 'production',
         label: '正式环境'
     },
@@ -100,7 +104,7 @@ name: "tool",
             requestDatas:[],
             currentIdx:-1,
             currentItem:null,
-            env:"production",
+            env:"release",
             envOptions:envConfig,
             showDecodePanel:false,
             height:667 - 40

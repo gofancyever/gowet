@@ -86,8 +86,11 @@ function onIpc(){
     var prefixUrl = url.split('#')[0]
     console.log(url)
     switch (arg) {
-      case 'production':
+      case 'release':
         url = url.replace(prefixUrl,'https://weixin.sxyygh.com/')
+        break;
+      case 'production':
+        url = url.replace(prefixUrl,'https://weixin.sxyygh.com/prod/')
         break;
       case 'preview':
         url = url.replace(prefixUrl,'https://weixin.sxyygh.com/preview/')
