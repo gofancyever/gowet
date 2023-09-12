@@ -33,12 +33,18 @@ name: "DecodePanel",
                     this.result = JSON.parse(encryptStr)
                 }catch (e) {
                     try {
-                        let encryptStr = encryptModule.j_img666555_e_m(value)
+                        let encryptStr = encryptModule.sm2ResDecrypt(value)
                         this.result = JSON.parse(encryptStr)
                     }catch (e) {
-                        console.log(e)
-                        Message.error('解密失败：'+e.message);
+                        try {
+                            let encryptStr = encryptModule.j_img666555_e_m(value)
+                            this.result = JSON.parse(encryptStr)
+                        }catch (e) {
+                            console.log(e)
+                            Message.error('解密失败：'+e.message);
+                        }
                     }
+
                 }
             }
 
